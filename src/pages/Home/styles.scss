@@ -1,0 +1,23 @@
+.home__movie-list {
+  list-style-type: none;
+  display: grid;
+  gap: 2rem;
+  padding-left: 0;
+  margin-top: 2rem;
+
+  a {
+    text-decoration: none !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .home__movie-list--grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .home__movie-list--grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
