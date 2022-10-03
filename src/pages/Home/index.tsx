@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios, { CancelTokenSource } from 'axios';
 import { api } from 'utils/api';
@@ -8,8 +8,8 @@ import { setToastMessage, setToastVisibility } from 'redux/toastSlice';
 import InfiniteScroll from 'react-infinite-scroller';
 import { Col, Row, Tab, Tabs } from 'react-bootstrap';
 import MainLayout from 'layouts/MainLayout';
-import MovieItem from 'pages/Home/components/MovieItem/MovieItem';
-import Loader from 'components/Loader';
+import MovieItem from 'pages/Home/components/MovieItem';
+import Loader from 'components/Loader/Spinner';
 import SearchInput from 'components/SearchInput';
 import { MovieListItem } from 'types/Movie';
 import { PaginatedResult } from 'types/PaginatedResult';
@@ -24,6 +24,7 @@ const Home = () => {
     const [tab, setTab] = useState(HomeTab.POPULAR);
     const [viewMode, setViewMode] = useState(ViewMode.GRID);
     const [filterChangeCount, setFilterChangeCount] = useState(1);
+    const [isMobile, setIsMobile] = useState(false)
     const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const dispatch = useAppDispatch();
 
@@ -114,9 +115,26 @@ const Home = () => {
 
     const clearSearchValue = () => {
         setSearchValue('');
-
         refreshList();
     };
+
+    const handleResize = () => {
+        if (window.innerWidth < 720) {
+            setIsMobile(true)
+        } else {
+            setIsMobile(false)
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, []);
 
     return (
         <MainLayout title="Movies">
@@ -125,7 +143,7 @@ const Home = () => {
                     <SearchInput
                         value={searchValue}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => onSearchChange(e)}
-                        onClear={() => clearSearchValue}
+                        onClear={() => clearSearchValue()}
                     />
                 </Col>
             </Row>
@@ -164,7 +182,7 @@ const Home = () => {
                             <div className={`home__movie-list mb-4 ${viewMode === ViewMode.GRID ? 'home__movie-list--grid' : ''}`}>
                                 {movieList.map((movie) => (
                                     <Link to={`/movie/${movie.id}`} key={movie.id}>
-                                        <MovieItem movie={movie} key={movie.id} viewMode={viewMode}/>
+                                        <MovieItem movie={movie} key={movie.id} viewMode={viewMode} isListViewForced={isMobile}/>
                                     </Link>
                                 ))}
                             </div>

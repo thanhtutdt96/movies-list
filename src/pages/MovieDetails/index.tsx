@@ -6,8 +6,8 @@ import { useAppDispatch } from 'utils/store';
 import { getErrorMessage } from 'utils/getErrorMessage';
 import { api } from 'utils/api';
 import MainLayout from 'layouts/MainLayout';
-import Loader from 'components/Loader';
-import { IMAGE_BASE_URL } from 'pages/Home/components/MovieItem/MovieItem';
+import MovieDetailsSkeleton from 'components/Loader/Skeleton/MovieDetailsSkeleton';
+import { IMAGE_BASE_URL } from 'pages/Home/components/MovieItem';
 import { MovieListItem, ThumbnailSize } from 'types/Movie';
 
 
@@ -63,7 +63,7 @@ const MovieDetails = () => {
                 <Row className="p-3">
                     <Col lg="3">
                         <Button
-                            variant="success"
+                            variant="primary"
                             onClick={() => navigate(-1)}
                             className="mb-3"
                         >
@@ -85,8 +85,8 @@ const MovieDetails = () => {
                             | <span className="ms-2">{movie.status}</span>
                         </div>
 
-                        <ProgressBar striped variant="success" now={(movie.vote_average || 0) / 10 * 100} />
-                        <figcaption className="text-success mt-2">
+                        <ProgressBar striped variant="primary" now={(movie.vote_average || 0) / 10 * 100} />
+                        <figcaption className="text-primary mt-2">
                             Vote by {movie.vote_count} people
                         </figcaption>
 
@@ -112,7 +112,7 @@ const MovieDetails = () => {
                     </Col>
                 </Row>
             )}
-            {isLoading && <Loader />}
+            {isLoading && <MovieDetailsSkeleton />}
         </MainLayout>
     );
 };
