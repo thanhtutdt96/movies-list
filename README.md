@@ -4,6 +4,10 @@
 
 Time spent: **12** hours spent in total
 
+## Important Note
+- Change the `.env.example` to `.env`
+- Start the dev by running `yarn start`
+
 ## User Stories
 
 The following **required** functionality is completed:
@@ -35,7 +39,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-> Please record screen to a GIF file and attach link here
+> https://media.giphy.com/media/O1LYLvVLu8PzqZvPAK/giphy.gif
 
 ## License
 
