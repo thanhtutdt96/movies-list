@@ -143,7 +143,7 @@ const Home = () => {
                     <SearchInput
                         value={searchValue}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => onSearchChange(e)}
-                        onClear={() => clearSearchValue()}
+                        onClear={clearSearchValue}
                     />
                 </Col>
             </Row>

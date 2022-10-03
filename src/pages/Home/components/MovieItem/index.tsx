@@ -26,7 +26,8 @@ const MovieItem: React.FC<IProps> = ({movie, imageWidth = ThumbnailSize.W342, vi
                 className={`${viewMode === ViewMode.LIST || isListViewForced ? 'movie-item__image--list w-auto' : ''}`}
                 variant="top"
                 loading="lazy"
-                src={`${IMAGE_BASE_URL + imageWidth}${movie.poster_path}`}
+                src={movie.poster_path ? `${IMAGE_BASE_URL + imageWidth}${movie.poster_path}` : ''}
+                alt={movie.title}
             />
             <Card.Body>
                 <Card.Title className="ellipsis-2-lines fw-bold movie-item__title">
