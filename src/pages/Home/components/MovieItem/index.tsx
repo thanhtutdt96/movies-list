@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, ProgressBar } from 'react-bootstrap';
 import { MovieListItem, ThumbnailSize } from 'types/Movie';
 import 'pages/Home/components/MovieItem/styles.scss';
 import { ViewMode } from 'types/Common';
@@ -34,6 +34,8 @@ const MovieItem: React.FC<IProps> = ({movie, imageWidth = ThumbnailSize.W342, vi
                     {movie.title}
                 </Card.Title>
                 <Card.Text className="text-secondary">{releaseDate}</Card.Text>
+                <figcaption className="mb-2">Rating: {(movie.vote_average || 0)}</figcaption>
+                <ProgressBar striped variant="primary" now={(movie.vote_average || 0) / 10 * 100} />
             </Card.Body>
         </Card>
     )

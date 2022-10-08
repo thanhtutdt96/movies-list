@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Col, ProgressBar, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setToastMessage, setToastVisibility } from 'redux/toastSlice';
@@ -85,6 +85,7 @@ const MovieDetails = () => {
                             | <span className="ms-2">{movie.status}</span>
                         </div>
 
+                        <figcaption className="mb-2 text-primary">Rating: {(movie.vote_average || 0)}</figcaption>
                         <ProgressBar striped variant="primary" now={(movie.vote_average || 0) / 10 * 100} />
                         <figcaption className="text-primary mt-2">
                             Vote by {movie.vote_count} people
