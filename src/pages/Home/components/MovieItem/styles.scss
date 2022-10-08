@@ -9,6 +9,7 @@
 .movie-item__title { color: #000; }
 
 .movie-item img {
+  transition: all 0.3s ease-in-out;
   animation: fadeIn 2.5s;
   -webkit-animation: fadeIn 2.5s;
   -moz-animation: fadeIn 2.5s;
