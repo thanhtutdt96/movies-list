@@ -29,7 +29,6 @@ const Home = () => {
 
     const cancelToken = useRef<CancelTokenSource | undefined>(undefined);
 
-    const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const dispatch = useAppDispatch();
 
     const allTabs = [
@@ -105,10 +104,6 @@ const Home = () => {
     const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setSearchValue(value);
-
-        if (typingTimeoutRef.current) {
-            clearTimeout(typingTimeoutRef.current);
-        }
 
         refreshList();
     }
