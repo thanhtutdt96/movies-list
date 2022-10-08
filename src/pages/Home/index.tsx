@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios, { CancelTokenSource } from 'axios';
+import { debounce } from 'lodash-es';
 import { api } from 'utils/api';
 import { useAppDispatch } from 'utils/store';
 import { getErrorMessage } from 'utils/getErrorMessage';
 import { setToastMessage, setToastVisibility } from 'redux/toastSlice';
-import InfiniteScroll from 'react-infinite-scroller';
 import { Col, Row, Tab, Tabs } from 'react-bootstrap';
+import InfiniteScroll from 'react-infinite-scroller';
 import MainLayout from 'layouts/MainLayout';
 import MovieItem from 'pages/Home/components/MovieItem';
 import Loader from 'components/Loader/Spinner';
@@ -24,7 +25,10 @@ const Home = () => {
     const [tab, setTab] = useState(HomeTab.POPULAR);
     const [viewMode, setViewMode] = useState(ViewMode.GRID);
     const [filterChangeCount, setFilterChangeCount] = useState(1);
-    const [isMobile, setIsMobile] = useState(false)
+    const [isMobile, setIsMobile] = useState(false);
+
+    const cancelToken = useRef<CancelTokenSource | undefined>(undefined);
+
     const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const dispatch = useAppDispatch();
 
@@ -43,15 +47,13 @@ const Home = () => {
         }
     ]
 
-    const fetchMovies = useCallback(async () => {
-        let cancelToken: CancelTokenSource | undefined;
-
-        if (typeof cancelToken != typeof undefined) {
-            cancelToken?.cancel();
+    const fetchMovies = useMemo(() => debounce(async () => {
+        if (typeof cancelToken.current != typeof undefined) {
+            cancelToken.current?.cancel();
         }
 
         // Save the cancel token for the current request
-        cancelToken = axios.CancelToken.source();
+        cancelToken.current = axios.CancelToken.source();
 
         const params: { page: number; query?: string; } = {
             page: currentPage,
@@ -64,7 +66,7 @@ const Home = () => {
         const response = await api
             .get<PaginatedResult<MovieListItem>>(searchValue ? 'search/movie' : `movie/${tab}`, {
                 params,
-                cancelToken: cancelToken?.token,
+                cancelToken: cancelToken.current?.token,
             }).catch((error) => {
                 const message = getErrorMessage(error);
 
@@ -86,7 +88,7 @@ const Home = () => {
         if (currentPage <= totalPagesCount) {
             setCurrentPage(prevState => prevState + 1);
         }
-    }, [dispatch, movieList, currentPage, totalPagesCount, tab, searchValue]);
+    }, 250), [dispatch, movieList, currentPage, totalPagesCount, tab, searchValue]);
 
     const refreshList = () => {
         setMovieList([]);
@@ -108,9 +110,7 @@ const Home = () => {
             clearTimeout(typingTimeoutRef.current);
         }
 
-        typingTimeoutRef.current = setTimeout(() => {
-            refreshList();
-        }, 250);
+        refreshList();
     }
 
     const clearSearchValue = () => {
