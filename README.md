@@ -27,17 +27,9 @@ The following **optional** features are implemented:
 - [x] Customize the highlight and selection effect of the cell.
 - [x] Improve UX loading by skeleton loading (for movie details)
 - [x] Enhance responsive.
-
-The following **additional** features are implemented:
-
 - [x] Toast message for network or api error (using Redux)
 - [x] Debounce api call when search typing, and prevent duplicated requests.
 
-## Video Walkthrough
-
-Here's a walkthrough of implemented user stories:
-
-> https://media.giphy.com/media/O1LYLvVLu8PzqZvPAK/giphy.gif
 
 ## License
 
