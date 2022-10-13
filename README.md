@@ -2,8 +2,6 @@
 
 **Movies** is a movies app using the [The Movie Database API](https://developers.themoviedb.org/3).
 
-Time spent: **12** hours spent in total
-
 ## Important Note
 - Change the `.env.example` to `.env`
 - Start the dev by running `yarn start`
